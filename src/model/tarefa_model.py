@@ -1,18 +1,19 @@
-from sqlalchemy.orm import declarative_base
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from datetime import datetime
+from sqlalchemy.ext.declarative import declarative_base
 
-# Criando a base para os modelos
 Base = declarative_base()
 
-# Definindo a classe Tarefa (modelo)
 class Tarefa(Base):
-    __tablename__ = 'tarefas'  # Nome da tabela no banco
-    id = Column(Integer, primary_key=True)
-    descricao = Column(String(255))  # Especificando o comprimento da coluna para descricao
-    concluida = Column(Boolean, default=False)
-    arquivo = Column(String(255))  # Especificando o comprimento da coluna para arquivo
+    __tablename__ = "tarefas"
 
-# Função para criar as tabelas no banco de dados
+    id = Column(Integer, primary_key=True, index=True)
+    descricao = Column(String(255))
+    concluida = Column(Boolean, default=False)
+    arquivo = Column(String(255), nullable=True)
+    tipo = Column(String(50))
+    data_hora = Column(DateTime, default=datetime.utcnow)
+    
 def create_tables(engine):
     try:
         Base.metadata.create_all(bind=engine)
